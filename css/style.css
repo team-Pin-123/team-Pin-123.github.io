@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Переменные и Базовые стили (Общие)
+   Переменные и Базовые стили
    ========================================================================== */
 :root {
   --bg-color: #ffffff;
@@ -15,7 +15,6 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   font-family: var(--font-main);
   background-color: var(--bg-color);
@@ -29,7 +28,7 @@ body {
 }
 
 /* ==========================================================================
-   СТИЛИ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ (НЕ СКРОЛЛИТСЯ)
+   Стили для главной и страниц участников
    ========================================================================== */
 body.fullscreen-page {
   height: 100vh;
@@ -42,10 +41,6 @@ body.fullscreen-page {
   padding: 0 40px;
   position: relative;
 }
-
-/* ==========================================================================
-   СТИЛИ ДЛЯ СТРАНИЦ УЧАСТНИКОВ (СКРОЛЛИТСЯ)
-   ========================================================================== */
 body.scrolling-page {
   height: auto;
   overflow-y: auto;
@@ -63,7 +58,7 @@ body.scrolling-page {
 }
 
 /* ==========================================================================
-   Общие компоненты (Шапка, подвал, иконки)
+   Общие компоненты
    ========================================================================== */
 .header {
   flex-shrink: 0;
@@ -100,17 +95,16 @@ body.scrolling-page {
   text-align: left;
 }
 .scrolling-page .footer {
-  text-align: center;
   border-top: 1px solid #e5e5e5;
   padding: 40px 0;
+  text-align: center;
 }
 ion-icon {
   vertical-align: middle;
-  margin-right: 0.5em;
 }
 
 /* ==========================================================================
-   Слайдер (Только для главной)
+   Слайдер
    ========================================================================== */
 .slider-container {
   width: 100%;
@@ -119,6 +113,7 @@ ion-icon {
   overflow: hidden;
   padding-top: 20px;
   margin-top: -20px;
+  cursor: grab;
 }
 .slider-wrapper {
   display: flex;
@@ -142,6 +137,7 @@ ion-icon {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
   transition: transform 0.4s ease;
+  pointer-events: none;
 }
 .slide:hover .slide-img {
   transform: scale(1.05);
@@ -161,6 +157,8 @@ ion-icon {
   font-size: 1.2rem;
   color: var(--text-secondary);
 }
+
+/* НАВИГАЦИЯ ДЛЯ ДЕСКТОПА (С ИМЕНАМИ) */
 .slider-nav {
   display: flex;
   position: absolute;
@@ -185,6 +183,7 @@ ion-icon {
   position: relative;
   z-index: 2;
   transition: color 0.4s ease;
+  white-space: nowrap;
 }
 .nav-item.active {
   color: var(--text-primary);
@@ -199,6 +198,25 @@ ion-icon {
   z-index: 1;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* НАВИГАЦИЯ ДЛЯ МОБИЛЬНЫХ (ТОЧКИ) */
+.slider-nav-mobile {
+  display: none; /* Скрыта по умолчанию */
+}
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #d6d6d6;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.nav-dot.active {
+  background-color: var(--text-secondary);
+  transform: scale(1.25);
 }
 
 /* ==========================================================================
@@ -252,14 +270,9 @@ ion-icon {
 /* ==========================================================================
    Адаптивность
    ========================================================================== */
-@media (max-width: 768px) {
+@media (max-width: 981px) {
   .fullscreen-wrapper {
     padding: 0 20px;
-  }
-  .slider-nav {
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 20px;
   }
   .slide-img {
     width: 200px;
@@ -273,5 +286,19 @@ ion-icon {
   }
   .member-hero h1 {
     font-size: 2.5rem;
+  }
+
+  /* ПЕРЕКЛЮЧАЕМ НАВИГАЦИЮ */
+  .slider-nav {
+    display: none;
+  } /* Прячем десктопную */
+  .slider-nav-mobile {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+  } /* Показываем мобильную */
+  .fullscreen-page .footer {
+    text-align: center;
   }
 }
