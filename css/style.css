@@ -7,19 +7,22 @@
   --text-secondary: #6e6e73;
   --accent-color: #0071e3;
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    sans-serif;
+  sans-serif;
   --border-radius: 18px;
 }
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: var(--font-main);
   background-color: var(--bg-color);
   color: var(--text-primary);
 }
+
 .container {
   max-width: 1080px;
   margin-left: auto;
@@ -34,6 +37,7 @@ body.fullscreen-page {
   height: 100vh;
   overflow: hidden;
 }
+
 .fullscreen-wrapper {
   display: flex;
   flex-direction: column;
@@ -41,10 +45,12 @@ body.fullscreen-page {
   padding: 0 40px;
   position: relative;
 }
+
 body.scrolling-page {
   height: auto;
   overflow-y: auto;
 }
+
 .scrolling-page .header {
   background-color: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(10px);
@@ -53,6 +59,7 @@ body.scrolling-page {
   top: 0;
   z-index: 100;
 }
+
 .scrolling-page main {
   padding-top: 20px;
 }
@@ -65,21 +72,25 @@ body.scrolling-page {
   width: 100%;
   padding: 20px 0;
 }
+
 .header__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .header__logo {
   font-weight: 600;
   font-size: 1.2rem;
 }
+
 .header__nav a {
   color: var(--text-primary);
   text-decoration: none;
   margin-left: 25px;
   transition: color 0.3s ease;
 }
+
 .main-content {
   flex-grow: 1;
   display: flex;
@@ -87,18 +98,22 @@ body.scrolling-page {
   justify-content: center;
   position: relative;
 }
+
 .footer {
   flex-shrink: 0;
   padding-bottom: 30px;
 }
+
 .fullscreen-page .footer {
   text-align: left;
 }
+
 .scrolling-page .footer {
   border-top: 1px solid #e5e5e5;
   padding: 40px 0;
   text-align: center;
 }
+
 ion-icon {
   vertical-align: middle;
 }
@@ -115,10 +130,12 @@ ion-icon {
   margin-top: -20px;
   cursor: grab;
 }
+
 .slider-wrapper {
   display: flex;
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
+
 .slide {
   flex: 0 0 100%;
   display: flex;
@@ -129,6 +146,7 @@ ion-icon {
   color: var(--text-primary);
   cursor: pointer;
 }
+
 .slide-img {
   width: 250px;
   height: 250px;
@@ -139,37 +157,63 @@ ion-icon {
   transition: transform 0.4s ease;
   pointer-events: none;
 }
+
 .slide:hover .slide-img {
   transform: scale(1.05);
 }
+
 .slide-caption {
   opacity: 0;
 }
+
 .slide.active .slide-caption {
   opacity: 1;
 }
+
 .slide-title {
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 10px;
 }
+
 .slide-description {
   font-size: 1.2rem;
   color: var(--text-secondary);
 }
 
-/* НАВИГАЦИЯ ДЛЯ ДЕСКТОПА (С ИМЕНАМИ) */
+/* НАВИГАЦИЯ ДЛЯ ДЕСКТОПА (С ИМЕНАМИ) - НОВАЯ ЛОГИКА */
 .slider-nav {
-  display: flex;
+  --indicator-width: 0px; /* Управляется из JS */
+  --indicator-offset: 0px; /* Управляется из JS */
+
+  display: inline-flex;
   position: absolute;
   bottom: 30px;
-  left: 40px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #f0f0f5;
   padding: 6px;
   border-radius: 999px;
-  align-items: center;
   z-index: 10;
 }
+
+/* НОВЫЙ ИНДИКАТОР ЧЕРЕЗ ПСЕВДОЭЛЕМЕНТ */
+.slider-nav::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 0;
+  height: calc(100% - 12px);
+  width: var(--indicator-width);
+  transform: translateX(var(--indicator-offset));
+  background-color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+  width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 .nav-item {
   font-family: var(--font-main);
   font-size: 1rem;
@@ -177,33 +221,24 @@ ion-icon {
   color: var(--text-secondary);
   background-color: transparent;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 20px; /* Возвращаем симметричные отступы */
   border-radius: 999px;
   cursor: pointer;
   position: relative;
-  z-index: 2;
+  z-index: 2; /* Текст всегда выше фона */
   transition: color 0.4s ease;
   white-space: nowrap;
 }
+
 .nav-item.active {
   color: var(--text-primary);
-}
-.nav-indicator {
-  position: absolute;
-  top: 6px;
-  height: calc(100% - 12px);
-  background-color: #fff;
-  border-radius: 999px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-    width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* НАВИГАЦИЯ ДЛЯ МОБИЛЬНЫХ (ТОЧКИ) */
 .slider-nav-mobile {
   display: none; /* Скрыта по умолчанию */
 }
+
 .nav-dot {
   width: 8px;
   height: 8px;
@@ -214,6 +249,7 @@ ion-icon {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
 .nav-dot.active {
   background-color: var(--text-secondary);
   transform: scale(1.25);
@@ -226,13 +262,16 @@ ion-icon {
   padding: 80px 0;
   text-align: center;
 }
+
 .member-hero h1 {
   font-size: 3rem;
   margin-top: 40px;
 }
+
 .member-details {
   padding: 40px 0 100px;
 }
+
 .details-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -240,22 +279,27 @@ ion-icon {
   max-width: 750px;
   margin: 0 auto;
 }
+
 .detail-block h3 {
   font-size: 1.8rem;
   margin-bottom: 15px;
 }
+
 .detail-block p,
 .detail-block ul {
   color: var(--text-secondary);
   font-size: 1.1rem;
 }
+
 .skills-list {
   list-style: none;
   padding-left: 0;
 }
+
 .skills-list li {
   margin-bottom: 10px;
 }
+
 .large-photo {
   display: block;
   width: 100%;
@@ -274,16 +318,20 @@ ion-icon {
   .fullscreen-wrapper {
     padding: 0 20px;
   }
+
   .slide-img {
     width: 200px;
     height: 200px;
   }
+
   .slide-title {
     font-size: 1.8rem;
   }
+
   .slide-description {
     font-size: 1.1rem;
   }
+
   .member-hero h1 {
     font-size: 2.5rem;
   }
@@ -291,13 +339,17 @@ ion-icon {
   /* ПЕРЕКЛЮЧАЕМ НАВИГАЦИЮ */
   .slider-nav {
     display: none;
-  } /* Прячем десктопную */
+  }
+
+  /* Прячем десктопную */
   .slider-nav-mobile {
     display: flex;
     justify-content: center;
     gap: 15px;
     width: 100%;
-  } /* Показываем мобильную */
+  }
+
+  /* Показываем мобильную */
   .fullscreen-page .footer {
     text-align: center;
   }
